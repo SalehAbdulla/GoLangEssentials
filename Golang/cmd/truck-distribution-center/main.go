@@ -23,7 +23,7 @@ type ElectricTruck struct {
 }
 
 func (t *NormalTruck) LoadCargo() error {
-	t.cargo += 1
+	t.cargo++
 	return nil
 }
 
@@ -33,14 +33,13 @@ func (t *NormalTruck) UnloadCargo() error {
 }
 
 func (e *ElectricTruck) LoadCargo() error {
-	e.cargo += 1
-	e.battery = -1
+	e.cargo++
+	e.battery--
 	return nil
 }
 
 func (e *ElectricTruck) UnloadCargo() error {
-	e.cargo += 1
-	e.battery = -1
+	e.cargo = 0
 	return nil
 }
 
@@ -57,7 +56,7 @@ func processTruck(truck Truck) error {
 		return fmt.Errorf("Error loading cargo: %w", err)
 	}
 
-	return ErrNotImplemnted
+	return nil
 }
 
 func main() {
@@ -66,6 +65,15 @@ func main() {
 	if err := processTruck(nT); err != nil {
 		log.Fatalf("error processing truck: %s", err)
 	}
+
+	// How to use the type of interface{} or any
+	person := make(map[string]interface{})
+	person["name"] = "SALEH"
+	person["age"] = 42
+
+	age, exists := person["age"].(int) // Specifying the type to get the result
+	if !exists {log.Fatal("age not exists")}
+	println(age)
 
 	eT := &ElectricTruck{id:"2"}
 	if err := processTruck(eT); err != nil {
