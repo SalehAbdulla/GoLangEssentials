@@ -4,7 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strings"
+	"sync"
+	"time"
 )
 
 type Truck interface {
@@ -53,6 +54,9 @@ var (
 func processTruck(truck Truck) error {
 	fmt.Printf("processing truck %+v\n", truck)
 
+	// simulate same processing time
+	time.Sleep(time.Second)
+
 	if err := truck.LoadCargo(); err != nil {
 		return fmt.Errorf("Error loading cargo: %w", err)
 	}
@@ -60,18 +64,41 @@ func processTruck(truck Truck) error {
 	return nil
 }
 
-func main() {
 
-	t := NormalTruck{cargo: 0}
-	fillTruckCargo(&t)
-	log.Println(t.cargo)
+func processFleet(trucks []Truck) error {
+	var wg sync.WaitGroup
+	wg.Add(len(trucks))
 
-	fmt.Println(strings.Repeat("-", 20))
+	for _, t := range trucks {
 
+		go func(t Truck) {
+			if err := processTruck(t); err != nil {log.Fatal(err.Error())}
+			wg.Done()
+		}(t)
+			
+	}
+
+	wg.Wait()
+	return nil
 }
-
 
 func fillTruckCargo(t *NormalTruck) {
 	t.cargo = 100
 }
 
+func main() {
+
+	fleet := []Truck{
+		&NormalTruck{id: "NT1", cargo: 0},
+		&ElectricTruck{id: "ET1", cargo: 0, battery: 100},
+		&NormalTruck{id: "NT2", cargo: 0},
+		&ElectricTruck{id: "ET2", cargo: 0, battery: 100},
+	}
+
+	if err := processFleet(fleet); err != nil {
+		log.Fatal(err.Error())
+	}
+
+	log.Println("Done")
+
+}
