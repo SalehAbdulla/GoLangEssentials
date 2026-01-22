@@ -60,17 +60,17 @@ func processTruck(truck Truck) error {
 }
 
 func main() {
-	
-	// How to use the type of interface{} or any
-	person := make(map[string]interface{})
-	person["name"] = "SALEH"
-	person["age"] = 42
 
-	age, exists := person["age"].(int) // Specifying the type to get the result
-	
-	if !exists {
-		log.Fatal("age not exists")
-	}
+	t := NormalTruck{cargo: 0}
 
-	println(age)
+	fillTruckCargo(&t)
+
+	log.Println(t.cargo)
+
 }
+
+
+func fillTruckCargo(t *NormalTruck) {
+	t.cargo = 100
+}
+
