@@ -1,4 +1,4 @@
-package internal
+package pkg
 
 const PORT = ":4000";
 
