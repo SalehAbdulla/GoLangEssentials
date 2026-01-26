@@ -6,7 +6,7 @@ import (
 	"myApp/pkg/config"
 	"myApp/pkg/http/handler"
 	"myApp/pkg/http/render"
-	"myApp/templates"
+	"myApp/pkg/templates"
 	"net/http"
 )
 

@@ -7,7 +7,7 @@ import (
 	"log"
 	"myApp/pkg/config"
 	"myApp/pkg/models"
-	"myApp/templates"
+	"myApp/pkg/templates"
 	"net/http"
 	"path"
 )

@@ -11,7 +11,8 @@ func Router(app *config.AppConfig) http.Handler {
 	mux := http.NewServeMux()
 
 	// Register handlers with patterns
-	mux.HandleFunc("GET /", handler.Repo.Home) // Pattern with HTTP method
+	// This handler become an argument to the middleware
+	mux.HandleFunc("GET /", FirstMiddlware(handler.Repo.Home)) // Pattern with HTTP method
 	// mux.HandleFunc("GET /post/{id}", postsHandler) // Pattern with path parameter
 
 	return mux
